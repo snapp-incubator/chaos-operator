@@ -1,0 +1,12 @@
+apiVersion: chaos.snappcloud.io/v1alpha1
+kind: NetworkChaos
+metadata:
+  labels:
+    app.kubernetes.io/name: networkchaos
+    app.kubernetes.io/instance: networkchaos-sample
+    app.kubernetes.io/part-of: chaos-operator
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: chaos-operator
+  name: networkchaos-sample
+spec:
+  # TODO(user): Add fields here
