@@ -358,7 +358,9 @@ func (r *NetworkChaosReconciler) manageToxics(ctx context.Context, req ctrl.Requ
 	log := log.FromContext(ctx)
 
 	// Check if the toxic already exists
-	exists := false
+	latencyExists := false
+	timeoutExists := false
+
 	toxics, err := proxy.Toxics()
 	if err != nil {
 		log.Error(err, "Failed to get toxics")
@@ -366,18 +368,17 @@ func (r *NetworkChaosReconciler) manageToxics(ctx context.Context, req ctrl.Requ
 	}
 
 	for _, toxic := range toxics {
-		if toxic.Name == networkChaos.GetName() {
-			exists = true
+		if toxic.Name == networkChaos.GetName()+"-latency" {
+			latencyExists = true
 			break
 		}
 	}
 
 	// Update the toxic if it exists
-	if exists {
-		_, err = proxy.UpdateToxic(networkChaos.GetName(), networkChaos.Spec.LatencyToxic.Probability, toxiproxy.Attributes{
-			"latency":  networkChaos.Spec.LatencyToxic.Latency,
-			"jitter":   networkChaos.Spec.LatencyToxic.Jitter,
-			"toxicity": networkChaos.Spec.LatencyToxic.Probability,
+	if latencyExists {
+		_, err = proxy.UpdateToxic(networkChaos.GetName()+"-latency", networkChaos.Spec.LatencyToxic.Probability, toxiproxy.Attributes{
+			"latency": networkChaos.Spec.LatencyToxic.Latency,
+			"jitter":  networkChaos.Spec.LatencyToxic.Jitter,
 		})
 		if err != nil {
 			log.Error(err, "Failed to update toxic")
@@ -385,17 +386,49 @@ func (r *NetworkChaosReconciler) manageToxics(ctx context.Context, req ctrl.Requ
 		}
 		log.Info("Toxic " + networkChaos.GetName() + " updated on " + proxy.Name + " proxy ")
 	} else {
+
 		// Add the toxic if it doesn't exist
-		_, err = proxy.AddToxic(networkChaos.GetName(), "latency", networkChaos.Spec.Stream, networkChaos.Spec.LatencyToxic.Probability, toxiproxy.Attributes{
-			"latency":  networkChaos.Spec.LatencyToxic.Latency,
-			"jitter":   networkChaos.Spec.LatencyToxic.Jitter,
-			"toxicity": networkChaos.Spec.LatencyToxic.Probability,
+		if networkChaos.Spec.LatencyToxic.Latency != 0 {
+
+			_, err = proxy.AddToxic(networkChaos.GetName()+"-latency", "latency", networkChaos.Spec.Stream, networkChaos.Spec.LatencyToxic.Probability, toxiproxy.Attributes{
+				"latency": networkChaos.Spec.LatencyToxic.Latency,
+				"jitter":  networkChaos.Spec.LatencyToxic.Jitter,
+			})
+			if err != nil {
+				log.Error(err, "Failed to create latency toxic")
+				return err
+			}
+			log.Info("Latency toxic " + networkChaos.GetName() + " added on " + proxy.Name + " proxy ")
+		}
+	}
+	for _, toxic := range toxics {
+		if toxic.Name == networkChaos.GetName()+"-timeout" {
+			timeoutExists = true
+			break
+		}
+	}
+	// Update the toxic if it exists
+	if timeoutExists {
+		_, err = proxy.UpdateToxic(networkChaos.GetName()+"-timeout", networkChaos.Spec.LatencyToxic.Probability, toxiproxy.Attributes{
+			"timeout": networkChaos.Spec.TimeoutToxic.Timeout,
 		})
 		if err != nil {
-			log.Error(err, "Failed to create toxic")
+			log.Error(err, "Failed to update toxic")
 			return err
 		}
-		log.Info("Toxic " + networkChaos.GetName() + " added on " + proxy.Name + " proxy ")
+		log.Info("Timeout toxic " + networkChaos.GetName() + " updated on " + proxy.Name + " proxy ")
+	} else {
+		if networkChaos.Spec.TimeoutToxic.Timeout != 0 {
+
+			_, err = proxy.AddToxic(networkChaos.GetName()+"-timeout", "timeout", networkChaos.Spec.Stream, networkChaos.Spec.TimeoutToxic.Probability, toxiproxy.Attributes{
+				"timeout": networkChaos.Spec.TimeoutToxic.Timeout,
+			})
+			if err != nil {
+				log.Error(err, "Failed to create timeout toxic")
+				return err
+			}
+			log.Info("Timeout toxic " + networkChaos.GetName() + " added on " + proxy.Name + " proxy ")
+		}
 	}
 	// Disable the proxy if NetworkChaosSpec.Enable is false
 	if !networkChaos.Spec.Enabled {

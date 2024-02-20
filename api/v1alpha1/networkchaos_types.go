@@ -40,7 +40,8 @@ type NetworkChaosSpec struct {
 	Stream string `json:"stream"`
 
 	// +kubebuilder:validation:Required
-	LatencyToxic Toxic `json:"latencyToxic"`
+	LatencyToxic LatencyToxic `json:"latencyToxic"`
+	TimeoutToxic TimeoutToxic `json:"timeoutToxic"`
 }
 
 // Upstream defines the upstream service details
@@ -54,7 +55,7 @@ type Upstream struct {
 }
 
 // Toxic defines the common structure of a toxic
-type Toxic struct {
+type LatencyToxic struct {
 
 	// +kubebuilder:validation:Required
 	Latency int `json:"latency"`
@@ -68,6 +69,17 @@ type Toxic struct {
 	// +kubebuilder:validation:Optional
 	// +kubebuilder:default=0
 	Jitter int `json:"jitter"`
+}
+type TimeoutToxic struct {
+
+	// +kubebuilder:validation:Required
+	Timeout int `json:"timeout"`
+
+	// +kubebuilder:validation:Optional
+	// +kubebuilder:validation:Maximum=1.0
+	// +kubebuilder:validation:Minimum=0.0
+	// +kubebuilder:default=1.0
+	Probability float32 `json:"probability"`
 }
 
 // NetworkChaosStatus defines the observed state of NetworkChaos
