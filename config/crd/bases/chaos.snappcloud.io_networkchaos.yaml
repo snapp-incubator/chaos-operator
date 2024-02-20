@@ -67,6 +67,18 @@ spec:
               stream:
                 default: downstream
                 type: string
+              timeoutToxic:
+                properties:
+                  probability:
+                    default: 1
+                    maximum: 1
+                    minimum: 0
+                    type: number
+                  timeout:
+                    type: integer
+                required:
+                - timeout
+                type: object
               upstream:
                 description: Upstream defines the upstream service details
                 properties:
@@ -80,6 +92,7 @@ spec:
                 type: object
             required:
             - latencyToxic
+            - timeoutToxic
             - upstream
             type: object
           status:
