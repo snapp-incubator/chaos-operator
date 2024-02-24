@@ -438,8 +438,15 @@ func (r *NetworkChaosReconciler) manageToxics(ctx context.Context, req ctrl.Requ
 		}
 		log.Info("Proxy Updated and disabled")
 		return nil
+	} else {
+		if err := proxy.Enable(); err != nil {
+			log.Error(err, "Failed to enable the proxy")
+			return err
+		}
+		log.Info("Proxy Updated and Enabled")
+		return nil
 	}
-	return nil
+
 }
 
 func (r *NetworkChaosReconciler) finalizeNetworkChaos(ctx context.Context, req ctrl.Request, networkChaos *chaosv1alpha1.NetworkChaos) error {
