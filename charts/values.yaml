@@ -31,7 +31,7 @@ controllerManager:
         drop:
         - ALL
     image:
-      repository: ghcr.io/snapp-incubator/chaos-operator:main
+      repository: ghcr.io/snapp-incubator/chaos-operator
       tag: latest
     resources:
       limits:
