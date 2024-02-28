@@ -294,4 +294,5 @@ $(HELMIFY): $(LOCALBIN)
 	test -s $(LOCALBIN)/helmify || GOBIN=$(LOCALBIN) go install github.com/arttor/helmify/cmd/helmify@latest
     
 helm: manifests kustomize helmify
-	$(KUSTOMIZE) build config/default | $(HELMIFY) charts
+	$(KUSTOMIZE) build config/default | $(HELMIFY) deploy/charts/chaos-operator
+

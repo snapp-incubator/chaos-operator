@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "chaos-operator.fullname" . }}-serving-cert
+  labels:
+  {{- include "chaos-operator.labels" . | nindent 4 }}
+spec:
+  dnsNames:
+  - '{{ include "chaos-operator.fullname" . }}-webhook-service.{{ .Release.Namespace
+    }}.svc'
+  - '{{ include "chaos-operator.fullname" . }}-webhook-service.{{ .Release.Namespace
+    }}.svc.{{ .Values.kubernetesClusterDomain }}'
+  issuerRef:
+    kind: Issuer
+    name: '{{ include "chaos-operator.fullname" . }}-selfsigned-issuer'
+  secretName: webhook-server-cert

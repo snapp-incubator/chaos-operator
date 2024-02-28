@@ -3,18 +3,18 @@ kind: CustomResourceDefinition
 metadata:
   name: networkchaos.chaos.snappcloud.io
   annotations:
-    cert-manager.io/inject-ca-from: '{{ .Release.Namespace }}/{{ include "charts.fullname"
+    cert-manager.io/inject-ca-from: '{{ .Release.Namespace }}/{{ include "chaos-operator.fullname"
       . }}-serving-cert'
     controller-gen.kubebuilder.io/version: v0.12.0
   labels:
-  {{- include "charts.labels" . | nindent 4 }}
+  {{- include "chaos-operator.labels" . | nindent 4 }}
 spec:
   conversion:
     strategy: Webhook
     webhook:
       clientConfig:
         service:
-          name: '{{ include "charts.fullname" . }}-webhook-service'
+          name: '{{ include "chaos-operator.fullname" . }}-webhook-service'
           namespace: '{{ .Release.Namespace }}'
           path: /convert
       conversionReviewVersions:
