@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  chaos-operator:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-02-28T12:36:04.149273291Z"
+    description: A Helm chart for Kubernetes
+    digest: bd8dc0fa7357859efdc11a1e7f86829fd902e4e5011ecf1e2664b59aef13e21a
+    name: chaos-operator
+    type: application
+    urls:
+    - https://github.com/snapp-incubator/chaos-operator/releases/download/chaos-operator-0.1.0/chaos-operator-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-02-28T12:36:04.1495301Z"
