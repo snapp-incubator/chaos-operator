@@ -32,7 +32,7 @@ controllerManager:
         - ALL
     image:
       repository: ghcr.io/snapp-incubator/chaos-operator
-      tag: latest
+      tag: 0.1.0
     resources:
       limits:
         cpu: 500m
