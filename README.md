@@ -1,8 +1,11 @@
-# chaos-operator
-// TODO(user): Add simple overview of use/purpose
+# A toxiproxy chaos operator for simulate chaos experiments on Kubernetes
+The Chaos Operator is designed to simulate chaos within applications and Kubernetes infrastructure, utilizing Toxiproxy under the hood. Its primary objective is to automate the installation of Toxiproxy and persist its configuration within the Kubernetes cluster.
+With Chaos Operator, you can conveniently simulate various abnormalities in a controlled way that might occur in reality during development, testing, and production environments. This allows you to find potential problems in the system. Currently, it offers latency and timeout types of fault simulation.
 
-## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+
+## How the Chaos Operator Works
+The Chaos Operator enables you to create proxies with various toxics that mimic real-world network issues. It creates proxy instances that sit between your application and the actual service, intercepting and controlling the network traffic. Toxics are components that introduce various network conditions or issues, simulating problems like latency, timeouts, and connection issues. Toxics are applied to specific proxies, allowing you to selectively introduce these issues for testing.
+
 
 ## Getting Started
 You’ll need a Kubernetes cluster to run against. You can use [KIND](https://sigs.k8s.io/kind) to get a local cluster for testing, or run against a remote cluster.
@@ -41,8 +44,6 @@ UnDeploy the controller from the cluster:
 make undeploy
 ```
 
-## Contributing
-// TODO(user): Add detailed information on how you would like others to contribute to this project
 
 ### How it works
 This project aims to follow the Kubernetes [Operator pattern](https://kubernetes.io/docs/concepts/extend-kubernetes/operator/).
@@ -75,6 +76,10 @@ make manifests
 **NOTE:** Run `make --help` for more information on all potential `make` targets
 
 More information can be found via the [Kubebuilder Documentation](https://book.kubebuilder.io/introduction.html)
+
+
+## Contributing
+Contributions are welcomed and you can contribute by raising issues, improving the documentation, contributing to the core framework and tooling, etc.
 
 ## License
 
