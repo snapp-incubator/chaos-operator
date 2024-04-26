@@ -34,7 +34,38 @@ NAME                                      SECRETS   AGE
 chaos-operator-controller-manager         2         1d
 ```
 
+## How to use
+To simulate a fault for your service, you need to create a Chaos Proxy with a NetworkChaos object. Create a new YAML file to define a Chaos Proxy and add configuration parameters based on the type of Chaos you want to create.
 
+```yaml
+apiVersion: "chaos.snappcloud.io/v1alpha1"
+kind: NetworkChaos
+metadata:
+  name: network-chaos-example
+  namespace: network-chaos-example
+spec:
+  upstream:   
+    name: my-upstream-svc
+    port: "8080"
+  enabled: true
+  stream: upstream
+  latencyToxic:
+   latency: 7000
+   jitter: 1
+   probabilty: 1.0
+  timeoutToxic:
+   timeout: 2000
+    probabilty: 1.0
+```
+This example defines a proxy targeting the my-upstream-svc service with port 8080 under the network-chaos-example namespace.
+After creating the NetworkChaos object, a proxy is created and sits between your application and the my-upstream-svc service:
+
+```bash
+oc get svc 
+NAME                                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
+network-chaos-example-my-upstream-svc    ClusterIP   172.30.115.120   <none>        38861/TCP   2h
+```
+Now, you can request the toxiproxy-smapplocation service for faulty service, and you will see the request with a faulty response.
 
 ## Contributing
 Contributions are welcomed and you can contribute by raising issues, improving the documentation, contributing to the core framework and tooling, etc.
