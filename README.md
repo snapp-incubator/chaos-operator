@@ -65,7 +65,7 @@ oc get svc
 NAME                                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
 network-chaos-example-my-upstream-svc    ClusterIP   172.30.115.120   <none>        38861/TCP   2h
 ```
-Now, you can request the toxiproxy-smapplocation service for faulty service, and you will see the request with a faulty response.
+Now, you can request the network-chaos-example-my-upstream-svc service, and you will see the request with a faulty response.
 
 ## Contributing
 Contributions are welcomed and you can contribute by raising issues, improving the documentation, contributing to the core framework and tooling, etc.
