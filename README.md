@@ -15,16 +15,42 @@ The Chaos Operator enables you to create proxies with various toxics that mimic 
 
 #### Install Chaos Operator using Helm
 
+[Helm](https://helm.sh) must be installed to use the charts. Please refer to
+Helm's [documentation](https://helm.sh/docs) to get started.
+
+Once Helm has been set up correctly, add the repo as follows:
+
+```shell
+helm repo add chaos-operator https://snapp-incubator.github.io/chaos-operator
+```
+
+If you had already added this repo earlier, run `helm repo update` to retrieve
+the latest versions of the packages. You can then run `helm search repo
+chaos-operator` to see the charts.
+
+To install the rls-operator chart:
+
+```shell
+helm install chaos-operator chaos-operator/chaos-operator
+```
+
+To uninstall the chart:
+
+```shell
+helm delete chaos-operator
+```
+
+
 #### Create the namespace to install Chaos Operator
 
 ```
-kubectl create ns chaos
+kubectl create ns my-chaos-operator
 ```
 
 #### Verify the installation
 
 ```bash
-kubectl get po -n chaos
+kubectl get po -n my-chaos-operator
 NAME                                                       READY   STATUS    RESTARTS          AGE
 chaos-operator-controller-manager-694fcd95fc-r6kjb         2/2     Running   0                 1d
 ```
